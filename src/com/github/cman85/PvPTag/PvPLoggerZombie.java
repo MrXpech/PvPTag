@@ -20,7 +20,7 @@ public class PvPLoggerZombie {
    public static Set<String> waitingToDie = new HashSet<String>();
    public static Set<Integer> zombieIds = new HashSet<Integer>();
    public static int HEALTH = 50;
-   private int hp = 10;
+   private double hp = 10;
    private Zombie zombie;
    private String player;
    private PlayerInventory contents;
@@ -154,7 +154,7 @@ public class PvPLoggerZombie {
       waitingToDie.add(player);
    }
 
-   public int getHealth() {
+   public double getHealth() {
       if(! PvPTag.keepPlayerHealthZomb)
          return HEALTH;
       else {
@@ -162,7 +162,7 @@ public class PvPLoggerZombie {
       }
    }
 
-   public int getHealthForOwner() {
+   public double getHealthForOwner() {
       if(! PvPTag.keepPlayerHealthZomb)
          return hp;
       else
