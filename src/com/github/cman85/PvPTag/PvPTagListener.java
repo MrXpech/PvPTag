@@ -1,5 +1,11 @@
 package com.github.cman85.PvPTag;
 
+import com.massivecraft.factions.FFlag;
+import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.FactionColls;
+import com.massivecraft.factions.entity.UConf;
+import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.mcore.ps.PS;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -52,7 +58,7 @@ public class PvPTagListener implements Listener {
          } else {
             return;
          }
-         if(! e.isCancelled()) {
+         if (! e.isCancelled()) {
             PvPTag.debug("Event shouldn't be cancelled");
             if(pvptag.isSafe(hitted.getName())) {
                pvptag.addUnsafe(hitted);
@@ -66,6 +72,12 @@ public class PvPTagListener implements Listener {
             }
          } else {
             PvPTag.debug("Event should be cancelled");
+            if (pvptag.factionsEnabled) {
+               if (UPlayer.get(hitted).getFaction().equals(UPlayer.get(hitter).getFaction()) &&
+                       !BoardColls.get().getForUniverse("default").getFactionAt(PS.valueOf((Entity)hitted)).getFlag(FFlag.FRIENDLYFIRE)) {
+                  return;
+               }
+            }
             if(! pvptag.isSafe(hitted.getName()) && hitter.getInventory().getItemInHand() != null) {
                PvPTag.debug("Player isn't safe: " + hitted.getName());
                pvptag.resetSafeTime(hitted);
