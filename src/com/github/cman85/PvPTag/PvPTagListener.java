@@ -2,20 +2,17 @@ package com.github.cman85.PvPTag;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 public class PvPTagListener implements Listener {
@@ -97,8 +94,22 @@ public class PvPTagListener implements Listener {
    }
 
    @EventHandler
+   public void onEnderpearl(PlayerInteractEvent e) {
+
+      if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && e.getMaterial() == Material.ENDER_PEARL &&
+              ! pvptag.isSafe(e.getPlayer().getName()) && pvptag.preventTeleport) {
+
+         e.getPlayer().sendMessage(ChatColor.RED + "You cannot enderpearl until you are safe.");
+         e.setCancelled(true);
+
+      }
+
+   }
+
+   @EventHandler(priority =  EventPriority.LOW, ignoreCancelled = true)
    public void onTpEvent(PlayerTeleportEvent e) {
-      if(! pvptag.isSafe(e.getPlayer().getName()) && ! e.getPlayer().isOp() && pvptag.preventTeleport) {
+      if(! pvptag.isSafe(e.getPlayer().getName()) && ! e.getPlayer().isOp() && pvptag.preventTeleport &&
+              (e.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || e.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN)) {
          e.setCancelled(true);
          e.getPlayer().sendMessage(ChatColor.RED + "You cannot teleport until you are safe.");
       } else {
