@@ -117,7 +117,7 @@ public class PvPTag extends JavaPlugin implements Listener {
       this.deathChestEnabled = configuration.getConfig().getBoolean("Death.DeathChest Enabled", true);
       this.safeTimeObjective = configuration.getConfig().getBoolean("Scoreboard Display.Safe Time", true);
       this.healthObjective = configuration.getConfig().getBoolean("Scoreboard Display.Health", true);
-      this.factionsEnabled = configuration.getConfig().getBoolean("Factions Enables", false);
+      this.factionsEnabled = configuration.getConfig().getBoolean("Factions Enabled", false);
    }
 
    private void resetNameTagsAuto() {

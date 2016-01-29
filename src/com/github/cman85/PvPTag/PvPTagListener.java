@@ -121,7 +121,8 @@ public class PvPTagListener implements Listener {
    @EventHandler(priority =  EventPriority.LOW, ignoreCancelled = true)
    public void onTpEvent(PlayerTeleportEvent e) {
       if(! pvptag.isSafe(e.getPlayer().getName()) && ! e.getPlayer().isOp() && pvptag.preventTeleport &&
-              (e.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || e.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN)) {
+              (e.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || e.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN) &&
+                      (e.getFrom().distance(e.getTo()) > 8)) {
          e.setCancelled(true);
          e.getPlayer().sendMessage(ChatColor.RED + "You cannot teleport until you are safe.");
       } else {
